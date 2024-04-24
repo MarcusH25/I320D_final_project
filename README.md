@@ -319,7 +319,96 @@ y_pred = rf_clf.predict(X_test_imputed)
 print("\nClassification Report:")
 print(classification_report(y_test, y_pred))
 ```
+<img width="319" alt="image" src="https://github.com/MarcusH25/I320D_final_project/assets/123523085/61aace81-f7b5-43a8-a9db-1581293c184a">
 
 
+# Model Evaluation 
+
+**Learning Curve**
+
+```python
+# Assuming you have already fit the XGBClassifier model: xgb_clf.fit(X_train, y_train)
+# And you have split your data into X_train, X_test, y_train, y_test
+
+# Calculate the learning curve
+train_sizes, train_scores, test_scores = learning_curve(
+    estimator=xgb_clf,
+    X=X_train,
+    y=y_train,
+    train_sizes=np.linspace(0.1, 1.0, 10),
+    cv=5,
+    scoring='accuracy',
+    n_jobs=-1
+)
+
+# Calculate the mean and standard deviation for train and test scores
+train_mean = np.mean(train_scores, axis=1)
+train_std = np.std(train_scores, axis=1)
+test_mean = np.mean(test_scores, axis=1)
+test_std = np.std(test_scores, axis=1)
+
+# Plot the learning curve
+plt.figure(figsize=(10, 6))
+plt.plot(train_sizes, train_mean, color='blue', label='Training accuracy')
+plt.fill_between(train_sizes, train_mean - train_std, train_mean + train_std, alpha=0.1, color='blue')
+
+plt.plot(train_sizes, test_mean, color='green', label='Cross-validation accuracy')
+plt.fill_between(train_sizes, test_mean - test_std, test_mean + test_std, alpha=0.1, color='green')
+
+plt.xlabel('Training set size')
+plt.ylabel('Accuracy')
+plt.title('Learning Curves')
+plt.legend(loc='best')
+plt.show()
+```
+
+photo goes here!
+
+**Validation Curve**
+
+```python
+# Assuming you have already fit the XGBClassifier model: xgb_clf.fit(X_train, y_train)
+# And you have split your data into X_train, X_test, y_train, y_test
+
+# Define the hyperparameter to investigate
+param_name = 'max_depth'
+param_range = np.arange(2, 21)
+
+# Calculate the validation curve
+train_scores, test_scores = validation_curve(
+    estimator=xgb_clf,
+    X=X_train,
+    y=y_train,
+    param_name=param_name,
+    param_range=param_range,
+    scoring='accuracy',
+    cv=5,
+    n_jobs=-1
+)
+
+# Calculate the mean and standard deviation for train and test scores
+train_mean = np.mean(train_scores, axis=1)
+train_std = np.std(train_scores, axis=1)
+test_mean = np.mean(test_scores, axis=1)
+test_std = np.std(test_scores, axis=1)
+
+# Plot the validation curve
+plt.figure(figsize=(10, 6))
+plt.plot(param_range, train_mean, color='blue', label='Training accuracy')
+plt.fill_between(param_range, train_mean - train_std, train_mean + train_std, alpha=0.1, color='blue')
+
+plt.plot(param_range, test_mean, color='green', label='Cross-validation accuracy')
+plt.fill_between(param_range, test_mean - test_std, test_mean + test_std, alpha=0.1, color='green')
+
+plt.xlabel(f'{param_name}')
+plt.ylabel('Accuracy')
+plt.title('Validation Curve')
+plt.legend(loc='best')
+plt.show()
+```
+
+photo goes here!
+
+**Ablation Study: "leave-one-feature-out"**
 
 
