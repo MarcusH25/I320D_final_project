@@ -228,3 +228,36 @@ print(models)
 
 <img width="436" alt="image" src="https://github.com/MarcusH25/I320D_final_project/assets/123523085/7c694eb3-0e95-4439-9949-b41e06d2572e">
 
+
+# Classification
+
+**Fitting eXtreme Gradient Boosting**
+
+```python
+# Initialize the XGBoost classifier with regularization parameters
+xgb_clf = XGBClassifier(reg_alpha=0.5, reg_lambda=1.0, gamma=1.0)
+
+# Extract feature names from the training data
+feature_names = X_train.columns.tolist()
+
+# Fit the XGBoost classifier on the training data
+xgb_clf.fit(X_train, y_train)
+
+# Perform 5-fold cross-validation on the training data
+cv_scores = cross_val_score(xgb_clf, X_train, y_train, cv=5, scoring='accuracy')
+
+# Calculate the mean accuracy
+mean_cv_accuracy = cv_scores.mean()
+print(f"Mean cross-validation accuracy: {mean_cv_accuracy * 100:.2f}%")
+
+# Make predictions on the test data
+y_pred = xgb_clf.predict(X_test)
+
+# Print the classification report
+print("\nClassification Report:")
+print(classification_report(y_test, y_pred))
+```
+
+
+
+
