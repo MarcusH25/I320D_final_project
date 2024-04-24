@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # EDA
-#from dataprep.eda import create_report
+from dataprep.eda import create_report
 
 # Interactivity
 from IPython.core.interactiveshell import InteractiveShell
@@ -35,8 +35,7 @@ from sklearn.model_selection import learning_curve
 from sklearn.model_selection import validation_curve
 from sklearn.model_selection import cross_val_predict
 from sklearn.metrics import roc_curve, auc
-
-#from lazypredict.Supervised import LazyClassifier, LazyRegressor
+from lazypredict.Supervised import LazyClassifier, LazyRegressor
 
 # Classifiers
 from xgboost import XGBClassifier
@@ -44,7 +43,7 @@ from sklearn.ensemble import RandomForestClassifier
 from lightgbm import LGBMClassifier
 
 # Explainability:
-#import shap
+import shap
 
 # Saving & Loading Best Model
 import pickle
