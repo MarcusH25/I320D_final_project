@@ -52,4 +52,10 @@ import pickle
 #import gradio as gr
 import tkinter as tk
 ```
+# Loading Data
+```python
+df = pd.read_csv("train_split.csv")
+df.head()
+```
+
 
