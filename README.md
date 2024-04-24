@@ -88,6 +88,7 @@ plt.show()
 
 ```
 
+<img width="530" alt="Screenshot 2024-04-24 163402" src="https://github.com/MarcusH25/I320D_final_project/assets/123523085/fd7fce9a-d872-451e-807f-411f430a3f95">
 
 
 
