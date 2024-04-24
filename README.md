@@ -226,4 +226,5 @@ models, predictions = clf.fit(X_train, X_test, y_train, y_test)
 print(models)
 ```
 
+<img width="436" alt="image" src="https://github.com/MarcusH25/I320D_final_project/assets/123523085/7c694eb3-0e95-4439-9949-b41e06d2572e">
 
