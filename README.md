@@ -91,4 +91,31 @@ plt.show()
 <img width="530" alt="Screenshot 2024-04-24 163402" src="https://github.com/MarcusH25/I320D_final_project/assets/123523085/fd7fce9a-d872-451e-807f-411f430a3f95">
 
 
+# Correlation Matrix
+``` python
+numerical_df = df.select_dtypes(include=[np.number])  # Ensure to include import numpy as np if not already done
+
+# Creating the heatmap
+plt.figure(figsize=(18, 15))
+heatmap = sns.heatmap(numerical_df.corr(), annot=True, cmap='coolwarm', linewidths=0.5, linecolor='white', fmt=".2f", annot_kws={"size": 6})
+
+# Rotate the x-axis labels
+plt.xticks(rotation=90)
+
+# Set the font size for x and y tick labels
+plt.xticks(fontsize=8)
+plt.yticks(fontsize=8)
+
+# Adjust the spacing between subplots
+plt.subplots_adjust(left=0.3, right=0.95, top=0.95, bottom=0.3)
+
+# Add a title
+plt.title('Correlation Matrix', fontsize=14)
+
+# Show the plot
+plt.show()
+```
+
+
+
 
