@@ -257,6 +257,34 @@ y_pred = xgb_clf.predict(X_test)
 print("\nClassification Report:")
 print(classification_report(y_test, y_pred))
 ```
+<img width="334" alt="image" src="https://github.com/MarcusH25/I320D_final_project/assets/123523085/6c8081f6-c585-41d4-b1ab-5fd023e0d038">
+
+**Fitting Light Gradient-Boosting Machine**
+```python
+# Initialize the LGBMClassifier
+lgbm_clf = LGBMClassifier()
+
+# Fit the LGBMClassifier on the training data
+lgbm_clf.fit(X_train, y_train)
+
+# Perform 5-fold cross-validation on the training data
+cv_scores = cross_val_score(lgbm_clf, X_train, y_train, cv=5, scoring='accuracy')
+
+# Calculate the mean accuracy
+mean_cv_accuracy = cv_scores.mean()
+print(f"Mean cross-validation accuracy (LGBMClassifier): {mean_cv_accuracy * 100:.2f}%")
+
+# Make predictions on the test data
+y_pred = lgbm_clf.predict(X_test)
+
+# Print the classification report
+print("\nClassification Report (LGBMClassifier):")
+print(classification_report(y_test, y_pred))
+```
+
+
+**Fitting RandomForest**
+
 
 
 
