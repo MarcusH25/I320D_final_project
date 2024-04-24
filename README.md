@@ -281,10 +281,44 @@ y_pred = lgbm_clf.predict(X_test)
 print("\nClassification Report (LGBMClassifier):")
 print(classification_report(y_test, y_pred))
 ```
+<img width="331" alt="image" src="https://github.com/MarcusH25/I320D_final_project/assets/123523085/75021447-5ecd-4309-8301-088485a5cc8a">
 
 
 **Fitting RandomForest**
 
+```python
+# Initialize the imputer (Here, using the mean strategy as an example)
+imputer = SimpleImputer(strategy='mean')
+
+# Initialize the RandomForest classifier
+rf_clf = RandomForestClassifier(n_estimators=100, max_depth=10, min_samples_split=10, random_state=42)
+
+# Assume X_train, X_test, and y_train are already defined and contain NaN values
+
+# Impute missing values in X_train and X_test
+X_train_imputed = imputer.fit_transform(X_train)
+X_test_imputed = imputer.transform(X_test)
+
+# Extract feature names from the training data after imputation
+feature_names = X_train.columns.tolist()
+
+# Fit the RandomForest classifier on the imputed training data
+rf_clf.fit(X_train_imputed, y_train)
+
+# Perform 5-fold cross-validation on the imputed training data
+cv_scores = cross_val_score(rf_clf, X_train_imputed, y_train, cv=5, scoring='accuracy')
+
+# Calculate the mean accuracy
+mean_cv_accuracy = cv_scores.mean()
+print(f"Mean cross-validation accuracy: {mean_cv_accuracy * 100:.2f}%")
+
+# Make predictions on the imputed test data
+y_pred = rf_clf.predict(X_test_imputed)
+
+# Print the classification report
+print("\nClassification Report:")
+print(classification_report(y_test, y_pred))
+```
 
 
 
