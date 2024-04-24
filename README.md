@@ -3,8 +3,7 @@ The goal of our project is to create a machine learning model that's able to pre
 
 # Loading the libraries and dataset
 
-```
- 
+```python
 # Data Analysis
 import pandas as pd
 import numpy as np
