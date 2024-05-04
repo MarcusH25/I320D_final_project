@@ -117,7 +117,51 @@ plt.show()
 ```
 <img width="463" alt="Screenshot 2024-04-24 164506" src="https://github.com/MarcusH25/I320D_final_project/assets/123523085/f19b447e-a7f5-4a08-abaf-a3373fe201d2">
 
+
+# Data prep 
+``` python
+
+# Assuming df is your dataframe
+# Perform EDA
+report = create_report(df)
+
+
+# Assuming report is your EDA report generated using dataprep
+display(report)
+
+```
 # Explanation of Dropping Specific Features
+#Explanation of Dropping Specific Features
+
+##### **High Null**
+*   **Verification_status_joint** (63971)
+*   **desc** (54849)
+*   **mths_since_last_record** (54349)
+*   **mths_since_last_major_delinq** (32831)
+*   **mths_since_last_major_derog** (48155)
+*   **batch_enrolled** (10264)
+*   **emp_title** (3826)
+*   **tot_coll_amt** (5124)
+*   **tot_cur_bal**  (5124)
+*   **total_rev_hi_lim** (5124)
+
+#####**Missing Vlaues:**
+
+*   **verification_status_joint** (100% missing)
+
+*   **mths_since_last_record** (83% missing)
+
+##### **Does not provide significant:**
+*   **zip_code**
+*   **title**
+*   **addr_state**
+*   **member_id**
+*   **sub_grade**
+#### **Highly correlated features:**
+
+*   **Loan_amnt**
+*   **funded_amnt**
+*   **List itemfunded_amnt_inv**
 
 
 # Dropping columns with too many nulls and duplicates
