@@ -403,7 +403,7 @@ plt.show()
 
 
 
-**Learning Curve**
+# **Learning Curve**
 
 ```python
 # Assuming you have already fit the XGBClassifier model: xgb_clf.fit(X_train, y_train)
@@ -442,7 +442,7 @@ plt.show()
 ```
 ![image](https://github.com/MarcusH25/I320D_final_project/assets/123523085/4350637c-8b4c-48b4-835e-b87388a5836b)
 
-**Validation Curve**
+# **Validation Curve**
 
 ```python
 # Assuming you have already fit the XGBClassifier model: xgb_clf.fit(X_train, y_train)
