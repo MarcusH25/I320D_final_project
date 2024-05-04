@@ -128,8 +128,11 @@ report = create_report(df)
 
 # Assuming report is your EDA report generated using dataprep
 display(report)
-
 ```
+![image](https://github.com/MarcusH25/I320D_final_project/assets/123523085/b2426051-c989-4961-9483-5225abd5b7a2)
+
+![image](https://github.com/MarcusH25/I320D_final_project/assets/123523085/30d16801-745b-4912-a278-4bc9c0fe507a)
+
 # Explanation of Dropping Specific Features
 #Explanation of Dropping Specific Features
 
@@ -368,6 +371,38 @@ print(classification_report(y_test, y_pred))
 
 # Model Evaluation 
 
+# **Confusion Matrix**
+
+```python
+# Make predictions on the test data
+y_pred = xgb_clf.predict(X_test)
+
+# Create the confusion matrix
+cm = confusion_matrix(y_test, y_pred)
+
+# Extract the values from the confusion matrix
+tn, fp, fn, tp = cm.ravel()
+
+# Create a custom labels array
+labels = np.asarray([
+    [f"True Negatives\n{tn}", f"False Positives\n{fp}"],
+    [f"False Negatives\n{fn}", f"True Positives\n{tp}"]
+])
+
+# Plot the confusion matrix using seaborn 
+plt.figure(figsize=(8, 6))
+sns.heatmap(cm, annot=labels, fmt='', cmap='Blues')
+plt.xlabel('Predicted Labels')
+plt.ylabel('True Labels')
+plt.title('Confusion Matrix')
+plt.xticks([0.5, 1.5], ['Not Eligible (0)', 'Eligible (1)'])
+plt.yticks([0.5, 1.5], ['Not Eligible (0)', 'Eligible (1)'], rotation=90)
+plt.show()
+```
+![image](https://github.com/MarcusH25/I320D_final_project/assets/123523085/060458c6-0d10-43f3-bf9d-027df5e5dc5c)
+
+
+
 **Learning Curve**
 
 ```python
@@ -405,8 +440,7 @@ plt.title('Learning Curves')
 plt.legend(loc='best')
 plt.show()
 ```
-
-photo goes here!
+![image](https://github.com/MarcusH25/I320D_final_project/assets/123523085/4350637c-8b4c-48b4-835e-b87388a5836b)
 
 **Validation Curve**
 
@@ -451,8 +485,99 @@ plt.legend(loc='best')
 plt.show()
 ```
 
-photo goes here!
-
-**Ablation Study: "leave-one-feature-out"**
+![image](https://github.com/MarcusH25/I320D_final_project/assets/123523085/6e104e78-8281-446d-9e30-cf4efa81fe2e)
 
 
+# **ROC Cruve & AUC**
+```python 
+y_pred_proba = xgb_clf.predict_proba(X_test)[:, 1]
+
+fpr, tpr, thresholds = roc_curve(y_test, y_pred_proba)
+
+roc_auc = auc(fpr, tpr)
+
+plt.figure()
+plt.plot(fpr, tpr, color='darkorange', lw=2, label=f'ROC curve (AUC = {roc_auc:.2f})')
+plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
+plt.xlim([0.0, 1.0])
+plt.ylim([0.0, 1.05])
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('Receiver Operating Characteristic (ROC) Curve')
+plt.legend(loc="lower right")
+plt.show()
+```
+![image](https://github.com/MarcusH25/I320D_final_project/assets/123523085/0ccb438f-a692-4268-ae60-3ef1b5840721)
+
+# **Ablation Study: "leave-one-feature-out"**
+```python
+# Get the feature names
+feature_names = X_train.columns.tolist()
+
+# Initialize a list to store the cross-validation scores for each feature
+cv_scores = []
+
+# Iterate over each feature
+for feature in feature_names:
+    # Create a copy of X_train without the current feature
+    X_train_reduced = X_train.drop(feature, axis=1)
+
+    # Perform cross-validation predictions on the reduced training data
+    y_pred = cross_val_predict(xgb_clf, X_train_reduced, y_train, cv=5)
+
+    # Calculate the cross-validation accuracy
+    score = accuracy_score(y_train, y_pred)
+
+    # Store the cross-validation score
+    cv_scores.append(score)
+
+    print(f"Cross-validation accuracy without {feature}: {score:.4f}")
+
+# Find the feature with the highest cross-validation score (most important)
+most_important_feature_idx = np.argmax(cv_scores)
+most_important_feature = feature_names[most_important_feature_idx]
+
+print(f"\nMost important feature: {most_important_feature}")
+```
+![image](https://github.com/MarcusH25/I320D_final_project/assets/123523085/a4ec8122-23fb-4df1-be8f-f08d1a9525b1)
+
+# **XGB Feature Importances**
+
+```python
+# Get the feature importances from the trained XGBoost model
+feature_importances = xgb_clf.feature_importances_
+
+# Get the feature names from the training data
+feature_names = X_train.columns.tolist()
+
+# Create a dictionary to store the feature names and their importances
+feature_importance_dict = dict(zip(feature_names, feature_importances))
+
+# Sort the dictionary by feature importance in descending order
+sorted_feature_importance_dict = dict(sorted(feature_importance_dict.items(), key=lambda x: x[1], reverse=True))
+
+# Plot the feature importances
+plt.figure(figsize=(10, 6))
+plt.bar(range(len(sorted_feature_importance_dict)), list(sorted_feature_importance_dict.values()), align='center')
+plt.xticks(range(len(sorted_feature_importance_dict)), list(sorted_feature_importance_dict.keys()), rotation=90)
+plt.xlabel('Features')
+plt.ylabel('Importance')
+plt.title('Feature Importances')
+plt.show()
+```
+![image](https://github.com/MarcusH25/I320D_final_project/assets/123523085/c9b112e3-6ef2-4590-b3dc-a24f549672f7)
+
+# **Saving our best model, Encoding, and our Scaling**
+```python
+with open('xgb_clf.pkl', 'wb') as file:
+    pickle.dump(xgb_clf, file)
+
+# Save the preprocessor object
+with open('preprocessor.pkl', 'wb') as file:
+    pickle.dump(preprocessor, file)
+
+
+# Save the scaler object
+with open('scaler.pkl', 'wb') as file:
+    pickle.dump(scaler, file)
+```
